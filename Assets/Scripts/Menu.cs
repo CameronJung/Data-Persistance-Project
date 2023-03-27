@@ -22,4 +22,10 @@ public class Menu : MonoBehaviour
     {
         SceneManager.LoadScene(1);
     }
+
+    public void SetName(string name)
+    {
+        Record.instance.player_name = name;
+    }
+
 }
