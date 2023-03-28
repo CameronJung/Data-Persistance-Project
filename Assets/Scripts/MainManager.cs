@@ -22,10 +22,18 @@ public class MainManager : MonoBehaviour
 
     private int num_Bricks = 0;
     private int bricksStruck = 0;
+
+    private bool unsaved = false;
     
     // Start is called before the first frame update
     void Start()
     {
+        //The player had a chance to set a name if they don't have one
+        if(Record.instance.playerName == null || Record.instance.playerName == "")
+        {
+            Record.instance.playerName = "Anonymous";
+        }
+        recordText.text = ("Best Score: " + Record.instance.highScore + " Name: " + Record.instance.champion);
         CreateLevel();
     }
 
@@ -80,11 +88,17 @@ public class MainManager : MonoBehaviour
         bricksStruck++;
         num_Bricks--;
         ScoreText.text = $"Score : {m_Points}";
+        if(m_Points > Record.instance.highScore)
+        {
+
+            recordText.text = ("Best Score: " + m_Points + " Name: " + Record.instance.playerName);
+        }
     }
 
     public void GameOver()
     {
         m_GameOver = true;
+        Record.instance.SaveHighScore(m_Points);
         GameOverText.SetActive(true);
     }
 
@@ -105,6 +119,7 @@ public class MainManager : MonoBehaviour
 
     public void QuitGame()
     {
+        Record.instance.SaveHighScore(m_Points);
         SceneManager.LoadScene(0);
     }
 }

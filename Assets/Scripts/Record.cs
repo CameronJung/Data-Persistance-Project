@@ -10,7 +10,7 @@ public class Record : MonoBehaviour
 
     public static Record instance;
 
-    public string player_name;
+    public string playerName;
     public int playerBest;
 
     public int highScore;
@@ -43,10 +43,21 @@ public class Record : MonoBehaviour
         public string achiever;
     }
     
-    public void SaveHighScore(int newHighScore)
+    public void SaveHighScore(int newBest)
     {
-        SaveData saveData = new SaveData();
-        saveData.achievement = newHighScore;
-        saveData.achiever = player_name;
+        if(newBest > playerBest)
+        {
+            playerBest = newBest;
+        }
+        if(playerBest > highScore)
+        {
+            SaveData saveData = new SaveData();
+            saveData.achievement = playerBest;
+            saveData.achiever = playerName;
+
+            champion = playerName;
+            highScore = playerBest;
+        }
+        
     }
 }
