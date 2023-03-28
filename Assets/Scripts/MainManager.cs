@@ -102,4 +102,9 @@ public class MainManager : MonoBehaviour
             CreateLevel();
         }
     }
+
+    public void QuitGame()
+    {
+        SceneManager.LoadScene(0);
+    }
 }
