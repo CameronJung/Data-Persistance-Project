@@ -28,8 +28,7 @@ public class Record : MonoBehaviour
         else
         {
             playerBest = 0;
-            highScore = 0;
-            champion = "Nobody";
+            LoadSaveData();
         }
 
         instance = this;
@@ -57,7 +56,29 @@ public class Record : MonoBehaviour
 
             champion = playerName;
             highScore = playerBest;
+
+            string json = JsonUtility.ToJson(saveData);
+            File.WriteAllText(Application.persistentDataPath + FILENAME, json);
         }
         
+    }
+
+    public void LoadSaveData()
+    {
+        string path = Application.persistentDataPath + FILENAME;
+
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+
+            SaveData data = JsonUtility.FromJson<SaveData>(json);
+            champion = data.achiever;
+            highScore = data.achievement;
+        }
+        else
+        {
+            highScore = 0;
+            champion = "Nobody";
+        }
     }
 }
