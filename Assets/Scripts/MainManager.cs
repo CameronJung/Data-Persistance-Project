@@ -12,6 +12,8 @@ public class MainManager : MonoBehaviour
 
     public Text ScoreText;
     public GameObject GameOverText;
+
+    public Text recordText;
     
     private bool m_Started = false;
     private int m_Points;
@@ -19,6 +21,7 @@ public class MainManager : MonoBehaviour
     private bool m_GameOver = false;
 
     private int num_Bricks = 0;
+    private int bricksStruck = 0;
     
     // Start is called before the first frame update
     void Start()
@@ -72,7 +75,9 @@ public class MainManager : MonoBehaviour
 
     void AddPoint(int point)
     {
-        m_Points += point;
+        m_Points += point + bricksStruck;
+        //add a bonus for hitting multiple bricks
+        bricksStruck++;
         num_Bricks--;
         ScoreText.text = $"Score : {m_Points}";
     }
@@ -81,5 +86,20 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+    }
+
+
+    
+
+    //The paddle calls this method
+    public void PaddleStrike()
+    {
+        bricksStruck = 0;
+        if (num_Bricks == 0)
+        {
+            //Build a new level if the bricks are all gone
+            //Building the level during a paddle strike ensures the ball won't be inside the bricks
+            CreateLevel();
+        }
     }
 }
